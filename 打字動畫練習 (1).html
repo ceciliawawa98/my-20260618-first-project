@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>打字機動畫練習</title>
+<style>
+  /* 整個頁面的基本樣式 */
+  body {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-family: "Microsoft JhengHei", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  /* 打字文字的樣式 */
+  #typing-text {
+    font-size: 36px;
+    font-weight: bold;
+    min-height: 50px;
+  }
+
+  /* 一直閃爍的游標 | */
+  .cursor {
+    display: inline-block;
+    width: 3px;
+    background-color: #00ffcc;
+    margin-left: 4px;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* 跑馬燈文字區域 */
+  #marquee-box {
+    margin-top: 60px;
+    width: 80%;
+    max-width: 600px;
+    overflow: hidden;
+    white-space: nowrap;
+    border: 2px solid #00ffcc;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  #marquee-text {
+    display: inline-block;
+    font-size: 20px;
+    color: #ffcc00;
+  }
+</style>
+</head>
+<body>
+
+  <!-- 打字機效果區塊 -->
+  <div>
+    <span id="typing-text"></span><span class="cursor">|</span>
+  </div>
+
+  <!-- 跑馬燈效果區塊 -->
+  <div id="marquee-box">
+    <span id="marquee-text"></span>
+  </div>
+
+  <script>
+    // ===== 第一部分：打字機效果 =====
+    const fullText = "吃錯方法，魚油等於白吃！";
+    const typingEl = document.getElementById("typing-text");
+    let charIndex = 0;
+
+    function typeWriter() {
+      if (charIndex <= fullText.length) {
+        typingEl.textContent = fullText.slice(0, charIndex);
+        charIndex++;
+        setTimeout(typeWriter, 200); // 每200毫秒打一個字
+      } else {
+        // 打完後，停頓1.5秒再重新開始
+        setTimeout(() => {
+          charIndex = 0;
+          typeWriter();
+        }, 1500);
+      }
+    }
+
+    typeWriter(); // 啟動打字機效果
+
+    // ===== 第二部分：跑馬燈效果 =====
+    const marqueeText = "📢 芯有靈芯｜DHA魚油吸收率才是關鍵，選對才有效～  ";
+    const marqueeEl = document.getElementById("marquee-text");
+    let pos = 0;
+
+    function scrollMarquee() {
+      pos++;
+      const rotated = marqueeText.slice(pos % marqueeText.length) + 
+                       marqueeText.slice(0, pos % marqueeText.length);
+      marqueeEl.textContent = rotated;
+      setTimeout(scrollMarquee, 150); // 每150毫秒移動一次
+    }
+
+    scrollMarquee(); // 啟動跑馬燈效果
+  </script>
+
+</body>
+</html>
